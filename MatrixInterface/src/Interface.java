@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import operations.Multiplication;
+
 public class Interface extends JFrame {
 	int blockX = 50;
 	int blockY = 50;
@@ -17,10 +19,10 @@ public class Interface extends JFrame {
 	private JLabel lblIgual;
 	
 	
-	static long[][] m1 = new long[12][8];
-	static long[][] m2 = new long[13][4];
-	static long[][] res = new long[3][5];
-	
+	static long[][] m1 = new long[1][3];
+	static long[][] m2 = new long[3][4];
+	static long[][] res = new long[1][4];
+		
 	static JTextField[][] jTextM1 = new JTextField[m1.length][m1[0].length];
 	static JTextField[][] jTextM2 = new JTextField[m2.length][m2[0].length];
 	static JTextField[][] jTextRes = new JTextField[res.length][res[0].length];
@@ -55,6 +57,14 @@ public class Interface extends JFrame {
 		btnGenerate.setBounds(10, 100, 100, 100);
 		c.add(btnGenerate);
 		
+		
+		lblSigno = new JLabel("Signo");
+		lblIgual = new JLabel("=");
+		getContentPane().add(lblSigno);
+		getContentPane().add(lblIgual);
+		lblSigno.setVisible(false);
+		lblIgual.setVisible(false);
+		
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				offX = 100;
@@ -83,35 +93,22 @@ public class Interface extends JFrame {
 		btnCalculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				//Updates m1 and m2 values 
+				updateMatrix(jTextM1, m1);
+				updateMatrix(jTextM2, m2);
+				
+				//Calculates res matrix
+				res = Multiplication.Multiplicate(m1, m2);
+				
+				//Draws res matrix
 				generateMatrix(jTextRes, offX, offY, res);
+				
+				//updateMatrix(jTextRes, res);
 				
 				lblIgual.setBounds(offX - blockX, offY, 46, 14);
 				lblIgual.setVisible(true);
 				
 				c.repaint();
-			}
-		});
-		
-		
-		btnUpdate = new JButton("Update");
-		btnUpdate.setBounds(10, 300, 100, 100);
-		c.add(btnUpdate);
-		
-		
-		lblSigno = new JLabel("Signo");
-		lblIgual = new JLabel("=");
-		getContentPane().add(lblSigno);
-		getContentPane().add(lblIgual);
-		lblSigno.setVisible(false);
-		lblIgual.setVisible(false);
-		
-		
-		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				updateMatrix(jTextM1, m1);
-				updateMatrix(jTextM2, m2);
-				//Aqui 
-				updateMatrix(jTextRes, res);
 			}
 		});
 		
@@ -152,6 +149,7 @@ public class Interface extends JFrame {
 	public void updateMatrix(JTextField[][] jTextMatrix, long[][] Matrix){
 		int rows = jTextMatrix.length;
 		int columns = jTextMatrix[0].length;
+		System.out.println("Printing matrix " + jTextMatrix.toString());
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {

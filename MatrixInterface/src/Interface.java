@@ -1,9 +1,12 @@
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.*;
 
+import operations.Addition;
 import operations.Multiplication;
 
 public class Interface extends JFrame {
@@ -14,24 +17,68 @@ public class Interface extends JFrame {
 	private JButton btnClear;
 	private JButton btnGenerate;
 	private JButton btnCalculate;
-	private JButton btnUpdate;
 	private JLabel lblSigno;
 	private JLabel lblIgual;
 	
+	static Random random = new Random();
 	
-	static long[][] m1 = new long[1][3];
-	static long[][] m2 = new long[3][4];
-	static long[][] res = new long[1][4];
+	static int a = random.nextInt(10) + 1;
+	static int b = random.nextInt(10) + 1;
+	static int c = random.nextInt(10) + 1;
+	
+	
+	static long[][] m1 = new long[a][b];
+	static long[][] m2 = new long[b][c];
+	static long[][] res = new long[a][c];
+	String sign = "*";
+	
+	
+	/*
+	static long[][] m1 = new long[a][b];
+	static long[][] m2 = new long[a][b];
+	static long[][] res = new long[a][b];
+	String sign = "-";
+	*/
 		
 	static JTextField[][] jTextM1 = new JTextField[m1.length][m1[0].length];
 	static JTextField[][] jTextM2 = new JTextField[m2.length][m2[0].length];
 	static JTextField[][] jTextRes = new JTextField[res.length][res[0].length];
 	
-	int offX = 100;
-	int offY = 100;
-	String sign = "*";
+	int offX = 50;
+	int offY = 200;
 	
 	public Interface() {
+		
+		//Not needed, initialization to check addition 
+		if (sign == "*"){
+			for (int ii = 0; ii < m1.length; ii++) {
+		        for (int jj = 0; jj < m1[0].length; jj++) {
+		        	Random random = new Random();
+		        	m1[ii][jj] = random.nextInt(100);
+		        	}
+		        }
+			
+			for (int ii = 0; ii < m2.length; ii++) {
+		        for (int jj = 0; jj < m2[0].length; jj++) {
+		        	Random random = new Random();
+		        	m2[ii][jj] = random.nextInt(100);
+		        }
+		    }
+			
+		}
+		else{
+			for (int ii = 0; ii < m1.length; ii++) {
+		        for (int jj = 0; jj < m1[0].length; jj++) {
+		        	Random random = new Random();
+		        	m1[ii][jj] = random.nextInt(100);
+		        	m2[ii][jj] = random.nextInt(100);
+		            res[ii][jj] = m1[ii][jj] + m2[ii][jj];
+		            System.out.println(ii + " " + jj);
+		        }
+		    }
+		}
+		//END initialization 
+		
 		Container c = getContentPane();
 		getContentPane().setLayout(null);
 
@@ -54,7 +101,7 @@ public class Interface extends JFrame {
 		});
 		
 		btnGenerate = new JButton("Generate");
-		btnGenerate.setBounds(10, 100, 100, 100);
+		btnGenerate.setBounds(100, 10, 100, 100);
 		c.add(btnGenerate);
 		
 		
@@ -68,11 +115,12 @@ public class Interface extends JFrame {
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				offX = 100;
-				offY = 100;
+				offY = 150;
 				
 				generateMatrix(jTextM1, offX, offY, m1);
 				
 				offX = (m1[0].length+2)*blockX + offX;
+				
 				generateMatrix(jTextM2, offX, offY, m2);
 				
 				lblSigno.setBounds(offX - blockX, offY, 46, 14);
@@ -82,12 +130,18 @@ public class Interface extends JFrame {
 				lblSigno.setText(sign);
 				lblSigno.setVisible(true);
 				
+				if (m1.length > m2.length){
+					setSize(offX,offY + ((m1.length+2)*blockY));
+				} else {
+					setSize(offX,offY + ((m2.length+2)*blockY));
+				}
+				
 				c.repaint();
 			}
 		});
 		
 		btnCalculate = new JButton("Calculate");
-		btnCalculate.setBounds(10, 200, 100, 100);
+		btnCalculate.setBounds(200, 10, 100, 100);
 		c.add(btnCalculate);
 		
 		btnCalculate.addActionListener(new ActionListener() {
@@ -98,7 +152,13 @@ public class Interface extends JFrame {
 				updateMatrix(jTextM2, m2);
 				
 				//Calculates res matrix
-				res = Multiplication.Multiplicate(m1, m2);
+				if (sign == "*"){
+					res = Multiplication.Multiplicate(m1, m2);
+				} else if (sign == "+"){
+					res = Addition.Add(m1, m2, false);
+				} else{
+					res = Addition.Add(m1, m2, true);
+				}
 				
 				//Draws res matrix
 				generateMatrix(jTextRes, offX, offY, res);
@@ -108,12 +168,17 @@ public class Interface extends JFrame {
 				lblIgual.setBounds(offX - blockX, offY, 46, 14);
 				lblIgual.setVisible(true);
 				
+				offX = offX + ((m2[0].length+2)*blockX);
+				
+				setSize(offX, getHeight());
+				
 				c.repaint();
 			}
 		});
 		
 		setSize(500,500);
 		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
 	

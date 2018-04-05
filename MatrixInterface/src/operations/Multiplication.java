@@ -17,6 +17,7 @@ public class Multiplication {
             System.out.println("Matrix can be done!");
         } else {
             System.out.println("Matrix multiplication CAAAAAAANT be done between matrix " + i + "," + j + " and matrix " + k + "," + l);
+            return null;
         }
         
         long[][] M = new long[i][l];

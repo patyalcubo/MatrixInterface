@@ -33,11 +33,12 @@ public class Interface extends JFrame {
 	String sign = "*";
 	
 	
+	
 	/*
 	static long[][] m1 = new long[a][b];
 	static long[][] m2 = new long[a][b];
 	static long[][] res = new long[a][b];
-	String sign = "-";
+	String sign = "+";
 	*/
 		
 	static JTextField[][] jTextM1 = new JTextField[m1.length][m1[0].length];
@@ -101,7 +102,7 @@ public class Interface extends JFrame {
 		});
 		
 		btnGenerate = new JButton("Generate");
-		btnGenerate.setBounds(100, 10, 100, 100);
+		btnGenerate.setBounds(110, 10, 100, 100);
 		c.add(btnGenerate);
 		
 		
@@ -141,7 +142,7 @@ public class Interface extends JFrame {
 		});
 		
 		btnCalculate = new JButton("Calculate");
-		btnCalculate.setBounds(200, 10, 100, 100);
+		btnCalculate.setBounds(210, 10, 100, 100);
 		c.add(btnCalculate);
 		
 		btnCalculate.addActionListener(new ActionListener() {

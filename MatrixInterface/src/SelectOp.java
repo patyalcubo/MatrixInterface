@@ -31,7 +31,7 @@ public class SelectOp {
 		JPanel p = new JPanel();
 		p.add(c);
 		p.add(b);
-		p.add(mi);
+		p.add(mi); // Adding JTextField for i range
 		p.add(mj);
 		p.add(l);
 		p.add(mk);
